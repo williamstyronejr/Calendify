@@ -1,20 +1,19 @@
 "use client";
 import dayjs from "dayjs";
 import { useEffect } from "react";
+import { useDrop } from "react-dnd";
 
 const Day = ({ day }: { day: number }) => {
+  const [, drop] = useDrop(() => ({
+    accept: "task",
+    drop(item: any, monitor) {
+      console.log("found", item);
+    },
+  }));
+
   return (
-    <div
-      className="relative bg-sky-700 w-1/7"
-      onDragOver={() => {
-        console.log("Dragging OVer");
-      }}
-      onDropCapture={() => {
-        console.log("testing");
-      }}
-      onDrop={(evt) => console.log("Drop Detected")}
-    >
-      <div>{day}</div>
+    <div ref={drop} className="relative border border-slated-500/10 w-1/7">
+      <div className="text-right pr-1 pt-1">{day}</div>
     </div>
   );
 };
@@ -23,7 +22,7 @@ const Week = ({ startDate }: { startDate: string }) => {
   const startDay = dayjs(startDate);
 
   return (
-    <div className="flex flex-row w-full">
+    <div className="flex flex-row w-full flex-grow">
       <Day day={startDay.get("date")} />
       <Day day={startDay.add(1, "day").get("date")} />
       <Day day={startDay.add(2, "day").get("date")} />
@@ -40,14 +39,14 @@ const Month = ({ startDate }: { startDate: string }) => {
 
   return (
     <>
-      <div className="flex flex-row w-full shrink-0 h-1">
-        <div className="w-1/7">Sunday</div>
-        <div className="w-1/7">Monday</div>
-        <div className="w-1/7">Tuesday</div>
-        <div className="w-1/7">Wednesday</div>
-        <div className="w-1/7">Thrusday</div>
-        <div className="w-1/7">Friday</div>
-        <div className="w-1/7">Saturday</div>
+      <div className="flex flex-row w-full shrink-0 h-6">
+        <div className="w-1/7 text-center">Sun</div>
+        <div className="w-1/7 text-center">Mon</div>
+        <div className="w-1/7 text-center">Tue</div>
+        <div className="w-1/7 text-center">Wed</div>
+        <div className="w-1/7 text-center">Thu</div>
+        <div className="w-1/7 text-center">Fri</div>
+        <div className="w-1/7 text-center">Sat</div>
       </div>
 
       <Week startDate={startMonth.toString()} />
@@ -73,7 +72,7 @@ const Views = ({
   }, []);
 
   return (
-    <div className="flex flex-row flex-wrap flex-grow h-0 w-full">
+    <div className="flex flex-col flex-nowrap flex-grow h-0 w-full">
       <Month startDate={startDate} />
     </div>
   );
