@@ -1,6 +1,7 @@
 import Head from "next/head";
 import "./globals.css";
 import { Inter } from "next/font/google";
+import Providers from "@/components/Providers";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -15,12 +16,14 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en">
-      <Head>
-        <title>Calendify</title>
-      </Head>
+    <Providers>
+      <html lang="en">
+        <Head>
+          <title>Calendify</title>
+        </Head>
 
-      <body className={`flex flex-row ${inter.className}`}>{children}</body>
-    </html>
+        <body className={`flex flex-row ${inter.className}`}>{children}</body>
+      </html>
+    </Providers>
   );
 }
